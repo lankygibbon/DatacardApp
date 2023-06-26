@@ -240,6 +240,10 @@ label {
   height: 100px;
   margin-bottom: 15px;
 }
+.operator-card-back .header-container {
+  height: 100px;
+  margin-bottom: 15px;
+}
 .header-left {
   background-color: rgb(0, 0, 0);
   background-image: url('../stripes.png');
@@ -265,6 +269,14 @@ label {
   padding: 10px;
   border-bottom: 3px solid rgb(224, 76, 14);
 }
+.operator-card-back .header-left {
+  width: 100%;
+  margin: 0;
+  padding: 10px;
+  border-bottom: 3px solid rgb(224, 76, 14);
+}
+
+
 .card-title {
   word-wrap: break-word;
 }

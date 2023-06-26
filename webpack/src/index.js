@@ -17,6 +17,7 @@ var TEXT_SMALL = '<i class="bi bi-arrows-angle-contract"></i> Switch to small fo
 var TEXT_LARGE = '<i class="bi bi-arrows-angle-expand"></i> Switch to large format';
 var TEXT_RULECARDS = '<i class="bi bi-list-check"></i> Switch to rulecards';
 var TEXT_DATACARDS = '<i class="bi bi-person-lines-fill"></i> Switch to datacards';
+var TEXT_DATACARDS_BACK = '<i class="bi bi-person-lines-fill"></i> Switch to datacards back';
 
 // Templates
 var datacardTemplate = require("./templates/datacard.handlebars");
@@ -26,6 +27,7 @@ const exampleCards = [
   {
     id: "id-1",
     operator: true,
+    back:false,
     equipment: true,
     generator: true,
     subfactions: ["All"],
@@ -98,6 +100,7 @@ const exampleCards = [
   {
     id: "id-2",
     operator: false,
+    back: false,
     equipment: true,
     title: "Equipment ability here (2 EP)",
     description: "Equipment",
@@ -110,6 +113,79 @@ const exampleCards = [
     unique_actions: [],
     weapons: [],
     rules: [
+      {
+        title: "Equipment rule",
+        equipment: true,
+        description: "Equipment rule description here",
+      },
+    ],
+  },
+  {
+    id: "id-3",
+    operator: true,
+    back:true,
+    equipment: true,
+    generator: true,
+    subfactions: ["All"],
+    title: "Genestealer Leader (with gold medal and claws)",
+    faction: "Hive Fleet",
+    original: "Genestealer Leader (with gold medal and claws)",
+    primary_category: "Hive Fleet",
+    secondary_categories: ", Tyranid, Genestealer, more categories",
+    photo: Leader,
+    stats_m: "■",
+    stats_apl: "■",
+    stats_ga: "■",
+    stats_df: "■",
+    stats_sv: "■",
+    stats_w: "■",
+    wounds: ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
+    abilities: [
+      {
+        title: "Equipment ability here (2 EP)",
+        description: "Quick brown fox jumps over the lazy marine",
+        equipment: true,
+      },
+    ],
+    unique_actions: [
+      {
+        title: "First unique action here (2 AP)",
+        description: "Only this fox jumps over the lazy marines",
+      },
+    ],
+    weapons: [
+      {
+        title: Helpers.removeParentheses("Weapon name"),
+        stats_a: "■",
+        stats_wsbs: "■",
+        stats_d: "■/■",
+        stats_sr: "Special rule",
+        stats_critical: "-",
+      },
+      {
+        title: Helpers.removeParentheses("Longer weapon name"),
+        stats_a: "■",
+        stats_wsbs: "■",
+        stats_d: "■/■",
+        stats_sr: "Special rule",
+        stats_critical: "Critical rule",
+      },
+      {
+        title: Helpers.removeParentheses(
+          "Very long weapon name (with parentheses)"
+        ),
+        stats_a: "■",
+        stats_wsbs: "■",
+        stats_d: "■/■",
+        stats_sr: "",
+        stats_critical: "Critical rule",
+      },
+    ],
+    rules: [
+      {
+        title: "Special rule",
+        description: "Special rule description here",
+      },
       {
         title: "Equipment rule",
         equipment: true,
@@ -267,7 +343,10 @@ function renderButtons() {
   element.classList.add("no-print");
 
   element.appendChild(button("toggle-datacards", TEXT_SMALL));
-  element.appendChild(button("toggle-rulecards", TEXT_RULECARDS));
+  //element.appendChild(button("toggle-rulecards", TEXT_RULECARDS));
+  element.appendChild(button("show-datacards", TEXT_DATACARDS));
+  element.appendChild(button("show-rulecards", TEXT_RULECARDS));
+  element.appendChild(button("show-datacards-back", TEXT_DATACARDS_BACK));
   element.appendChild(button("print-datacards", 'Print <i class="bi bi-printer"></i> cards'));
 
   const tweet = button(
@@ -309,10 +388,12 @@ function renderDatacards(datacards, preventScroll) {
 
   if (operatorcards) {
     $(".operator-card").show();
-    $(".rule-card").hide();    
+    $(".rule-card").hide();   
+    $(".operator-card-back").hide();   
   } else {
     $(".operator-card").hide();
-    $(".rule-card").show();    
+    $(".rule-card").show();  
+    $(".operator-card-back").hide();   
   }
 
   // Activate card photo dropzone
@@ -445,6 +526,7 @@ function parseRoster(roster) {
             id: "id-" + id,
             equipment: false,
             operator: true,
+            back: false,
 
             title: title,
             description: description,
@@ -717,7 +799,18 @@ function parseRoster(roster) {
             });
           }
 
-          if (isOperative) datacards.push(Helpers.deepMap(properties, Helpers.replaceSymbols));
+          if (isOperative) {
+            var propertiesCopy = JSON.parse(JSON.stringify(properties));
+            propertiesCopy.back = Boolean(propertiesCopy.back);
+            propertiesCopy.id = id++;
+            propertiesCopy.back = true;
+            
+            datacards.push(Helpers.deepMap(properties, Helpers.replaceSymbols));
+            var modifiedProperties = Helpers.deepMap(properties, Helpers.replaceSymbols);
+            modifiedProperties.back = true; // Set the back value to true
+            datacards.push(modifiedProperties);
+            console.log(properties); 
+          }
         });
     });
 
@@ -727,6 +820,7 @@ function parseRoster(roster) {
     datacards.push(rulecards[key]);
   }
 
+  console.log(datacards);
   return datacards;
 }
 
@@ -825,6 +919,28 @@ $("#toggle-rulecards").on("click", function (event) {
   }
   Helpers.redrawStripedTables();
   operatorcards = !operatorcards;
+});
+
+
+$("#show-rulecards").on("click", function (event) {
+  $(".operator-card").hide();
+  $(".rule-card").show();
+  $(".operator-card-back").hide();
+  Helpers.redrawStripedTables();
+});
+
+$("#show-datacards").on("click", function (event) {
+  $(".operator-card").show();
+  $(".rule-card").hide();
+  $(".operator-card-back").hide();
+  Helpers.redrawStripedTables();
+});
+
+$("#show-datacards-back").on("click", function (event) {
+  $(".operator-card").hide();
+  $(".rule-card").hide();
+  $(".operator-card-back").show();
+  Helpers.redrawStripedTables();
 });
 
 // Activate print button
