@@ -241,7 +241,7 @@ label {
   margin-bottom: 15px;
 }
 .operator-card-back .header-container {
-  height: 100px;
+  height: 60px;
   margin-bottom: 15px;
 }
 .header-left {
@@ -271,9 +271,20 @@ label {
 }
 .operator-card-back .header-left {
   width: 100%;
+  height: 100%;
   margin: 0;
   padding: 10px;
   border-bottom: 3px solid rgb(224, 76, 14);
+}
+
+.rule-card tbody {
+  width: 100%;
+  display: table;
+}
+
+.operator-card-back tbody {
+  width: 100%;
+  display: table;
 }
 
 
@@ -519,6 +530,23 @@ th:first-child, td:first-child {
   font-size: 1.0rem;
 }
 
+.operator-card-back.card-small .datacard-table-header {
+  font-size: 1.1rem;
+}
+.operator-card-back.card-small .datacard-table-body {
+  font-size: 0.8rem;
+}
+.operator-card-back.card-small .datacard-table-body td:first-child {
+  font-size: 0.8rem;
+}
+.operator-card-back.card-small .weapon-text {
+  font-size: .9rem;
+}
+
+.operator-card-back.card-small .row.rules  {
+  font-size: .8rem;
+}
+
 .table-striped > tbody > tr:nth-child(even) > td,
 .table-striped > tbody > tr:nth-child(even) > th {
   background-color: rgb(181, 181, 181);
@@ -543,12 +571,15 @@ th:first-child, td:first-child {
   padding-left: 10px !important;
 }
 .card-large .empty-table {
-  dispslay: none;
+  display: none;
 }
 .card-large .aa-list {
   display: none;
 }
 .rule-card .aa-list {
+  display: none;
+}
+.operator-card-back .aa-list {
   display: none;
 }
 .card-large .rules, .card-large .equipment {
@@ -566,12 +597,25 @@ th:first-child, td:first-child {
 .rule-card .aa-tables {
   display: block;
 }
+.operator-card-back .aa-tables {
+  display:block;
+}
+.operator-card-back .aa-list {
+
+  display:none;
+}
 .card-small .rules {
   display: none;
 }
 .rule-card .rules {
   display: block;
 }
+.operator-card-back .rules {
+  display: block;
+}
+
+
+
 .aa-title {
   font-weight: 700;
 }

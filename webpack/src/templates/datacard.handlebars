@@ -104,7 +104,7 @@
             {{#if (or (and operator (eq back false)) (or abilities.length unique_actions.length) ) }}
             <table class="aa-tables table">
               <tr>
-                {{#if (or abilities.length operator)}}
+                {{#if (or abilities.length)}}
                 <td class="p-0 aa-table-col">
                   <table class="table table-tiny">
                     <thead class="datacard-table-header uppercase font-heading">
@@ -124,7 +124,7 @@
                   </table>
                 </td>
                 {{/if}}
-                {{#if (or unique_actions.length operator)}}
+                {{#if (or unique_actions.length)}}
                 <td class="p-0 aa-table-col">
                   <table class="table table-tiny">
                     <thead class="datacard-table-header uppercase font-heading">
